@@ -24,7 +24,9 @@ scripts/formtest.js  form validation + WhatsApp message test, dead-link check
 scripts/foot.js   footer wordmark fit check
 ```
 Commands: `npm install` → `npm run build` → `npm run shots` / `npm run test:form` / `npm run test:config`.
-Deploy: `index.html` is fully self-contained (only Google Fonts load externally) — works on GitHub Pages.
+Deploy: `index.html` is fully self-contained (only Google Fonts load externally).
+- GitHub Pages: serves root `index.html`.
+- Vercel: `vercel.json` runs `python3 build.py` and serves `public/` (build.py writes `public/index.html`; `public/` is git-ignored).
 
 ## Design system
 - Direction: dark "evening showroom" luxury-editorial.
