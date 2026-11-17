@@ -39,7 +39,7 @@ p{margin:0}
 .loader-mark text{font:300 56px var(--f-display);fill:var(--ivory)}
 .loader-word{font:300 1.6rem/1 var(--f-display);letter-spacing:.04em;opacity:0;transform:translateY(10px)}
 .loader-word em{color:var(--brass)}
-.grain{position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.07;
+.grain{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.07;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* Buttons */
@@ -245,7 +245,7 @@ address{font-style:normal;font-size:var(--s-1);line-height:1.6;margin-bottom:2re
   .hero{padding-bottom:6rem}
   .hero-ui{flex-direction:column;align-items:stretch;gap:1rem}
   .hero-copy .lead{font-size:1rem;margin:.6rem 0 1.1rem}
-  .hero-actions .btn-ghost,.drag-hint,.hero-rating{display:none}
+  .hero-actions,.drag-hint,.hero-rating{display:none}
   .hero-actions .btn{flex:1}
   .slot{align-items:flex-end;padding:0 1rem 6.2rem}
   .slot.right{justify-content:center}
@@ -279,3 +279,20 @@ address{font-style:normal;font-size:var(--s-1);line-height:1.6;margin-bottom:2re
   .marquee-track{animation:none}
   *{transition-duration:.01ms!important}
 }
+
+/* Performance: no live blur over the moving 3D scene on phones/tablets or when the device is slow */
+@media (max-width:1000px),(pointer:coarse){
+  .grain{display:none}
+  .benefit,.config,.hero-rating,.dock-call,.cta-dock,.nav.is-scrolled{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .benefit,.config{background:linear-gradient(160deg,#2a1f17,#15110d)}
+  .nav.is-scrolled,.cta-dock{background:rgba(18,15,12,.96)!important}
+}
+html.lowfx .benefit,html.lowfx .config,html.lowfx .hero-rating,html.lowfx .dock-call,html.lowfx .cta-dock,html.lowfx .nav.is-scrolled{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lowfx .benefit,html.lowfx .config{background:linear-gradient(160deg,#2a1f17,#15110d)}
+html.lowfx .nav.is-scrolled{background:rgba(18,15,12,.96)}
+html.lowfx .grain{display:none}
+
+/* Service rows open a WhatsApp enquiry */
+.s-cover{position:absolute;inset:0;z-index:1}
+.s-cover:focus-visible{outline-offset:-4px}
+.service-list li{cursor:pointer}

@@ -22,6 +22,10 @@ scripts/shot.js   Playwright screenshots (desktop 1440 + mobile 390) → shots/
 scripts/cfg.js    configurator test (switch finish, check WhatsApp text)
 scripts/formtest.js  form validation + WhatsApp message test, dead-link check
 scripts/foot.js   footer wordmark fit check
+scripts/idle.js   counts WebGL draws while idle (hero + configurator must reach ~0)
+scripts/perf.js   long tasks + first paint with 4x CPU throttle
+scripts/og.js     renders assets/og.png (1200x630 share image) from the hero
+assets/           static files copied to site root by build.py (og.png)
 ```
 Commands: `npm install` → `npm run build` → `npm run shots` / `npm run test:form` / `npm run test:config`.
 Deploy: `index.html` is fully self-contained (only Google Fonts load externally).
@@ -52,6 +56,13 @@ Deploy: `index.html` is fully self-contained (only Google Fonts load externally)
 - No testimonials are shown — none were supplied; do not invent any.
 
 ## Performance
+- 3D init is deferred one frame so the loader paints first; all shaders are pre-compiled (compileAsync when KHR_parallel_shader_compile exists) before the intro.
+- Loader leaves as soon as the scene is ready (min 0.7 s, max ~1.6 s); scrolling is NEVER locked.
+- Render-on-demand: the loop compares camera / kitchen / intro state each frame and skips drawing when nothing changed. Hero auto-turn is capped at 30 fps and rests after 10 s without interaction. Shadow map updates only when the kitchen moves (`shadowMap.autoUpdate = false`). Anything that changes the scene outside the loop must call `api.invalidate()`.
+- Scroll feel: Lenis lerp 0.12 + ScrollTrigger scrub 0.35 (camera follows scroll closely).
+- Continuous adaptive quality: every 45 full-rate frames; if average > 24 ms → level 1 (no bloom, `html.lowfx` removes CSS blur), then level 2 (pixel ratio 1). Phones / small screens start at level 1 with pixel ratio ≤ 1.25.
+- No `backdrop-filter` over the canvas on phones/tablets (`max-width:1000px` or coarse pointer) or in `lowfx`; grain overlay hidden there.
+- Procedural wood textures use fewer strokes (startup cost).
 - Pixel ratio capped (1.75 desktop / 1.5 touch), shadow map 1024 / 512, bloom at half resolution.
 - Adaptive quality: if the first 2 s after intro run < 45 fps, bloom is switched off and DPR drops to 1.
 - Render loop pauses when tab hidden or canvas hidden. `prefers-reduced-motion` disables Lenis, intro, float, marquee.
@@ -60,10 +71,12 @@ Deploy: `index.html` is fully self-contained (only Google Fonts load externally)
 ## Status
 - Built and checked at 1440px and 390px (Playwright screenshots, no console errors, no horizontal overflow, no dead links, form + configurator tested).
 - Published as a private claude.ai artifact.
+- Review fixes (Nov 2026): faster loader, no scroll lock, tighter scroll, render-on-demand, no blur on mobile, adaptive quality; favicon (inline SVG), canonical + og:image (https://surabhi-modules-tryi.vercel.app/og.png), service rows open WhatsApp enquiries, "25,000" everywhere, one booking button on mobile (sticky bar), #finishes link lands after the camera settles, statement copy "three hundred and more projects", softer LED kick strip, second vase instead of stems, drawer contents, closer hero camera.
 - Footer wordmark reads "Surabhi *Modules*" (outline + brass italic; stacks on mobile).
 
 ## Waiting on client
 - Real logo (currently a text wordmark + "S" monogram).
 - Real project photos for a gallery section; real Google review quotes (with permission).
-- Final domain, privacy-policy page, OG share image, sitemap.xml / robots.txt on deploy.
+- Final domain (update canonical/og:url/og:image), privacy-policy page, sitemap.xml / robots.txt.
+- Confirm brand to lead with (Surabhi Modules vs Surabhi Decor), the Angamaly address and real opening hours (Justdial lists Sun 9–9), and the real finish names to use in the configurator.
 - Optional: their own .glb kitchen model to replace the procedural one.

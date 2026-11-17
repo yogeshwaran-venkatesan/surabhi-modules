@@ -23,11 +23,10 @@ const api = {}; // hooks exposed by the 3D scene (finish switching)
    ========================================================= */
 let lenis = null;
 if (!reduceMotion) {
-  lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true });
+  lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
-  lenis.stop();
 }
 document.querySelectorAll('a[href^="#"]').forEach((a) => {
   a.addEventListener('click', (e) => {
@@ -35,7 +34,9 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
     const el = id.length > 1 && document.querySelector(id);
     if (!el) return;
     e.preventDefault();
-    if (lenis) lenis.scrollTo(el, { offset: id === '#hero' ? 0 : -10, duration: 1.6 });
+    // #finishes: land inside the pinned part, after the camera has settled
+    const off = id === '#finishes' ? window.innerHeight * 0.3 : id === '#hero' ? 0 : -10;
+    if (lenis) lenis.scrollTo(el, { offset: off, duration: 1.2 });
     else el.scrollIntoView();
   });
 });
@@ -49,10 +50,14 @@ try {
 } catch (e) {
   document.documentElement.classList.add('no-webgl');
 }
-if (renderer) initScene();
+let resolveScene;
+const sceneReady = new Promise((r) => { resolveScene = r; });
+if (renderer) requestAnimationFrame(() => setTimeout(initScene, 0));
+else resolveScene();
 
 function initScene() {
-  const dprCap = coarse ? 1.5 : 1.75;
+  const small = Math.min(window.innerWidth, window.innerHeight) < 700;
+  const dprCap = coarse || small ? 1.25 : 1.5;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, dprCap));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -60,6 +65,7 @@ function initScene() {
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.shadowMap.autoUpdate = false; // shadows are re-drawn only when the kitchen moves
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(BG);
@@ -98,7 +104,7 @@ function initScene() {
     t.anisotropy = aniso;
     return t;
   }
-  function woodCanvas(base, grain, dense = 220) {
+  function woodCanvas(base, grain, dense = 120) {
     const c = document.createElement('canvas');
     c.width = c.height = 512;
     const g = c.getContext('2d');
@@ -110,7 +116,7 @@ function initScene() {
       g.globalAlpha = 0.04 + Math.random() * 0.2;
       g.lineWidth = 0.6 + Math.random() * 2.4;
       g.beginPath();
-      for (let y = 0; y <= 512; y += 8) {
+      for (let y = 0; y <= 512; y += 16) {
         const xx = x + Math.sin(y * fr + i) * amp;
         y === 0 ? g.moveTo(xx, y) : g.lineTo(xx, y);
       }
@@ -231,6 +237,7 @@ function initScene() {
     floor: std({ map: speckleStone('#0c0a08', 'rgba(255,240,220,.035)', 'rgba(0,0,0,.3)', 4000, 10), roughness: 0.45, metalness: 0, envMapIntensity: 0.4 }),
     wall: std({ map: tex(fluted(), 14, 1), bumpMap: tex(fluted(), 14, 1, false), bumpScale: 3, roughness: 0.7 }),
     led: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.7, 1.05), toneMapped: false }),
+    kick: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.25, 0.95, 0.6), toneMapped: false }),
     bulb: new THREE.MeshBasicMaterial({ color: new THREE.Color(2.6, 2.1, 1.4), toneMapped: false }),
   };
   M.floor.map.repeat.set(10, 10);
@@ -260,6 +267,20 @@ function initScene() {
   wall.receiveShadow = true;
   scene.add(wall);
 
+  {
+    const c = document.createElement('canvas');
+    c.width = 4; c.height = 256;
+    const g = c.getContext('2d');
+    const grd = g.createLinearGradient(0, 256, 0, 0);
+    grd.addColorStop(0, 'rgba(18,15,12,1)');
+    grd.addColorStop(0.35, 'rgba(18,15,12,.75)');
+    grd.addColorStop(1, 'rgba(18,15,12,0)');
+    g.fillStyle = grd; g.fillRect(0, 0, 4, 256);
+    const fade = new THREE.Mesh(new THREE.PlaneGeometry(22, 2.4), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false, fog: false }));
+    fade.position.set(0, -1.08 + 1.2, -3.15);
+    scene.add(fade);
+  }
+
   const headMat = new THREE.MeshBasicMaterial({ transparent: true, toneMapped: false, fog: false, depthWrite: false, opacity: 0 });
   const headline = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), headMat);
   scene.add(headline);
@@ -281,7 +302,7 @@ function initScene() {
   if (document.fonts) {
     document.fonts.load('300 100px "Cormorant Garamond"')
       .then(() => document.fonts.load('italic 300 100px "Cormorant Garamond"'))
-      .then(() => { stackedLayout = null; layoutHeadline(); })
+      .then(() => { stackedLayout = null; layoutHeadline(); if (api.invalidate) api.invalidate(); })
       .catch(() => {});
   }
 
@@ -304,7 +325,7 @@ function initScene() {
   const pl = box(1.8, PLINTH, BASE_D - 0.06, M.plinth);
   pl.position.set(-0.3, PLINTH / 2, -0.02);
   kitchen.add(pl);
-  const kick = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.006, 0.012), M.led);
+  const kick = new THREE.Mesh(new THREE.BoxGeometry(1.76, 0.008, 0.016), M.kick);
   kick.position.set(-0.3, 0.01, BASE_D / 2 - 0.05);
   kitchen.add(kick);
 
@@ -316,7 +337,7 @@ function initScene() {
     if (i === 1) {
       const hs = [0.2, 0.29, 0.29];
       let y = PLINTH + BASE_H;
-      hs.forEach((h) => {
+      hs.forEach((h, di) => {
         const dg = new THREE.Group();
         const front = box(MOD_W - 0.012, h - 0.008, 0.022, LIB.walnut);
         lower.push(front);
@@ -327,6 +348,27 @@ function initScene() {
         const hd = handle(0.36);
         hd.position.set(0, h / 2 - 0.035, 0.024);
         dg.add(hd);
+        // drawer contents so the "storage" chapter shows real use
+        if (di === 0) {
+          for (let c = 0; c < 4; c++) {
+            const cut = box(0.04, 0.012, 0.3, c % 2 ? M.board : M.ceramic);
+            cut.position.set(-0.18 + c * 0.12, -h / 2 + 0.04, -0.2);
+            dg.add(cut);
+          }
+        } else if (di === 1) {
+          [[-0.13, 0.11], [0.12, 0.09]].forEach(([px, r]) => {
+            const pot = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 0.92, 0.13, 28), M.brass);
+            pot.position.set(px, -h / 2 + 0.1, -0.24);
+            pot.castShadow = true;
+            dg.add(pot);
+          });
+        } else {
+          for (let pl2 = 0; pl2 < 6; pl2++) {
+            const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.085, 0.012, 28), M.ceramic);
+            plate.position.set(0, -h / 2 + 0.045 + pl2 * 0.014, -0.22);
+            dg.add(plate);
+          }
+        }
         y -= h;
         dg.position.set(x, y + h / 2, BASE_D / 2 + 0.011);
         dg.userData.closedZ = dg.position.z;
@@ -377,19 +419,12 @@ function initScene() {
   vase.position.set(0.3, CT, -0.1);
   vase.castShadow = true;
   kitchen.add(vase);
-  const stemM = std({ color: 0x4d5a3a, roughness: 0.8 });
-  for (let s = 0; s < 5; s++) {
-    const len = 0.28 + Math.random() * 0.22;
-    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.004, len, 5), stemM);
-    stem.position.set(0.3 + (Math.random() - 0.5) * 0.03, CT + 0.22 + len / 2, -0.1);
-    stem.rotation.z = (s - 2) * 0.18;
-    stem.rotation.x = (Math.random() - 0.5) * 0.3;
-    kitchen.add(stem);
-    const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 6), stemM);
-    leaf.scale.set(1, 0.35, 0.6);
-    leaf.position.set(stem.position.x - Math.sin(stem.rotation.z) * len / 2, stem.position.y + len / 2, stem.position.z);
-    kitchen.add(leaf);
-  }
+  // second, smaller vase instead of thin stems (reads cleaner at every distance)
+  const vase2 = new THREE.Mesh(new THREE.LatheGeometry(vasePts, 28), std({ color: 0x8c6b4a, roughness: 0.55 }));
+  vase2.scale.set(0.7, 0.62, 0.7);
+  vase2.position.set(0.42, CT, -0.14);
+  vase2.castShadow = true;
+  kitchen.add(vase2);
   const can = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.16, 24), M.brass);
   can.position.set(0.1, CT + 0.08, -0.16);
   can.castShadow = true;
@@ -503,13 +538,15 @@ function initScene() {
     if (reduceMotion) return;
     gsap.fromTo(kitchen.scale, { x: 0.985, y: 0.985, z: 0.985 }, { x: 1, y: 1, z: 1, duration: 0.6, ease: 'back.out(2)' });
   }
+  const invalidate = () => api.invalidate && api.invalidate();
   api.setCollection = (id) => {
     const [lo, up] = COLLECTIONS[id];
     lower.forEach((m) => (m.material = LIB[lo]));
     upper.forEach((m) => (m.material = LIB[up]));
+    invalidate();
     kitchenPulse();
   };
-  api.setTop = (id) => { topMesh.material = TOPS[id]; kitchenPulse(); };
+  api.setTop = (id) => { topMesh.material = TOPS[id]; invalidate(); kitchenPulse(); };
 
   /* ---------- Post-processing ---------- */
   const composer = new EffectComposer(renderer);
@@ -517,11 +554,20 @@ function initScene() {
   const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2), 0.7, 0.5, 1.05);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
-  let useBloom = true;
+  let useBloom = !(coarse || small); // phones start without bloom
+  let quality = useBloom ? 0 : 1;
+  function setQuality(q) {
+    quality = q;
+    useBloom = q === 0;
+    if (q >= 1) document.documentElement.classList.add('lowfx');
+    if (q >= 2) { renderer.setPixelRatio(1); composer.setPixelRatio(1); }
+    needsRender = 2;
+  }
+  if (quality) document.documentElement.classList.add('lowfx');
 
   /* ---------- Camera rig ---------- */
   const shots = {
-    hero: { px: -0.1, py: 0.55, pz: 9.4, tx: -0.1, ty: 0.38, tz: 0 },
+    hero: { px: -0.1, py: 0.55, pz: 8.7, tx: -0.1, ty: 0.38, tz: 0 },
     finish: { px: 0.9, py: 0.35, pz: 3.1, tx: 0.15, ty: -0.2, tz: 0.1 },
     drawers: { px: -0.55, py: 0.55, pz: 2.4, tx: -0.3, ty: -0.55, tz: 0.25 },
     storage: { px: -0.35, py: 0.85, pz: 2.6, tx: 0.3, ty: 0.7, tz: -0.1 },
@@ -531,7 +577,7 @@ function initScene() {
 
   // One timeline for the whole story; 1 unit of time = 100vh of scroll.
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: '#story', start: 'top bottom', end: 'bottom bottom', scrub: reduceMotion ? true : 1.1 },
+    scrollTrigger: { trigger: '#story', start: 'top bottom', end: 'bottom bottom', scrub: reduceMotion ? true : 0.35 },
     defaults: { ease: 'power2.inOut' },
   });
   tl.to(rig, { spinLock: 1, duration: 1 }, 0)
@@ -560,7 +606,12 @@ function initScene() {
     dragging = true; lastX = e.clientX; velocity = 0;
     dragZone.classList.add('is-dragging');
   });
+  let lastInteract = performance.now();
+  const touch = () => { lastInteract = performance.now(); };
+  window.addEventListener('scroll', touch, { passive: true });
+  window.addEventListener('pointerdown', touch, { passive: true });
   window.addEventListener('pointermove', (e) => {
+    touch();
     mx = (e.clientX / window.innerWidth) * 2 - 1;
     my = (e.clientY / window.innerHeight) * 2 - 1;
     if (!dragging) return;
@@ -583,46 +634,44 @@ function initScene() {
     composer.setSize(window.innerWidth, window.innerHeight);
     bloom.resolution.set(window.innerWidth / 2, window.innerHeight / 2);
     layoutHeadline();
+    if (api.invalidate) api.invalidate();
   }
   window.addEventListener('resize', onResize);
   onResize();
 
-  /* ---------- Loop ---------- */
-  let last = performance.now(), elapsed = 0, running = true;
-  let fpsFrames = 0, fpsTime = 0, fpsChecked = false;
+  /* ---------- Loop (renders only when something changed) ---------- */
+  let last = performance.now(), elapsed = 0, running = true, lastRender = 0, needsRender = 2, ambientOn = 1;
+  let perfN = 0, perfT = 0;
   const target = new THREE.Vector3();
   const pmx = { x: 0, y: 0 };
-  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) last = performance.now(); });
+  const prev = new Float32Array(24).fill(NaN);
+  const cur = new Float32Array(24);
+  api.invalidate = () => { needsRender = 2; renderer.shadowMap.needsUpdate = true; };
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { last = performance.now(); needsRender = 2; } });
 
   function frame() {
     requestAnimationFrame(frame);
     if (!running || !visible) return;
     const now = performance.now();
-    const dt = Math.min((now - last) / 1000, 0.05);
+    const rawDt = (now - last) / 1000;
+    const dt = Math.min(rawDt, 0.05);
     last = now; elapsed += dt;
 
-    // adaptive quality: if the first seconds after the intro run slow, drop bloom + resolution
-    if (!fpsChecked && intro.k >= 1) {
-      fpsFrames++; fpsTime += dt;
-      if (fpsTime > 2) {
-        fpsChecked = true;
-        if (fpsFrames / fpsTime < 45) {
-          useBloom = false;
-          renderer.setPixelRatio(1);
-        }
-      }
-    }
-
+    let userMoving = dragging || Math.abs(velocity) > 0.0005;
     if (!dragging) {
       velocity *= Math.pow(0.04, dt);
       userRot += velocity;
-      if (!reduceMotion && Math.abs(velocity) < 0.0005) userRot += dt * 0.06 * (1 - rig.spinLock);
+      // gentle auto-turn while the visitor is active; rests after 10 s idle so the GPU can sleep
+      ambientOn += ((now - lastInteract < 10000 ? 1 : 0) - ambientOn) * Math.min(1, rawDt * 1.5);
+      if (ambientOn < 0.01) ambientOn = 0;
+      if (!reduceMotion && !userMoving) userRot += dt * 0.06 * (1 - rig.spinLock) * ambientOn;
     }
     const lockAngle = -0.18 + rig.wide * 0.1;
     const desired = userRot * (1 - rig.spinLock) + lockAngle * rig.spinLock;
     spin.rotation.y += (desired - spin.rotation.y) * Math.min(1, dt * 6);
+    if (Math.abs(desired - spin.rotation.y) < 2e-4) spin.rotation.y = desired;
     if (rig.spinLock > 0.99) userRot = spin.rotation.y;
-    floatG.position.y = reduceMotion ? 0 : Math.sin(elapsed * 1.1) * 0.025 * (1 - rig.spinLock);
+    floatG.position.y = reduceMotion ? 0 : Math.sin(elapsed * 1.1) * 0.025 * (1 - rig.spinLock) * ambientOn;
 
     drawers.forEach((d, i) => {
       const amt = [0.22, 0.34, 0.12][i];
@@ -631,18 +680,19 @@ function initScene() {
     });
     upperDoorPivot.rotation.y = rig.door * 1.75;
 
-    // intro: lights fade up, headline appears, camera dollies in
     const k = intro.k;
     const glow = 0.15 + 0.85 * k;
     M.led.color.setRGB(2.2 * glow, 1.7 * glow, 1.05 * glow);
     M.bulb.color.setRGB(2.6 * glow, 2.1 * glow, 1.4 * glow);
+    M.kick.color.setRGB(1.25 * glow, 0.95 * glow, 0.6 * glow);
     warm.intensity = 0.5 * k;
     key.intensity = 30 + 55 * k;
     headMat.opacity = THREE.MathUtils.clamp((k - 0.25) / 0.6, 0, 1) * Math.max(0, 1 - rig.spinLock * 1.6);
 
-    // subtle mouse parallax in the hero (desktop)
     pmx.x += ((coarse ? 0 : mx) - pmx.x) * Math.min(1, dt * 3);
     pmx.y += ((coarse ? 0 : my) - pmx.y) * Math.min(1, dt * 3);
+    if (Math.abs(pmx.x - (coarse ? 0 : mx)) < 1e-4) pmx.x = coarse ? 0 : mx;
+    if (Math.abs(pmx.y - (coarse ? 0 : my)) < 1e-4) pmx.y = coarse ? 0 : my;
     const par = (1 - rig.spinLock) * 0.35;
 
     const a = camera.aspect;
@@ -655,9 +705,54 @@ function initScene() {
     target.set(txm, rig.ty + yOff, rig.tz);
     camera.lookAt(target);
 
+    // --- did anything change since the last frame?
+    cur[0] = camera.position.x; cur[1] = camera.position.y; cur[2] = camera.position.z;
+    cur[3] = target.x; cur[4] = target.y; cur[5] = target.z;
+    cur[6] = spin.rotation.y; cur[7] = floatG.position.y; cur[8] = rig.drawer; cur[9] = rig.door;
+    cur[10] = k; cur[11] = kitchen.scale.x; cur[12] = headMat.opacity; cur[13] = a;
+    let camMoved = false, kitchenMoved = false;
+    for (let i = 0; i < 14; i++) {
+      if (!(Math.abs(cur[i] - prev[i]) < 1e-5)) { if (i <= 5 || i >= 12) camMoved = true; else kitchenMoved = true; }
+    }
+    prev.set(cur);
+    if (!camMoved && !kitchenMoved && needsRender <= 0) return; // nothing to draw: GPU idles
+
+    // ambient-only motion (slow auto-turn in the hero) is capped at 30 fps
+    const ambient = !userMoving && !camMoved && k >= 1 && needsRender <= 0;
+    if (ambient && now - lastRender < 32) return;
+
+    if (kitchenMoved || needsRender > 0) renderer.shadowMap.needsUpdate = true;
+    if (needsRender > 0) needsRender--;
+
+    // adaptive quality, measured on full-rate frames only
+    if (!ambient && lastRender && quality < 2) {
+      const gap = now - lastRender;
+      if (gap < 120) {
+        perfN++; perfT += gap;
+        if (perfN >= 45) {
+          if (perfT / perfN > 24) setQuality(quality + 1); // under ~42 fps → step down
+          perfN = 0; perfT = 0;
+        }
+      }
+    }
+    lastRender = now;
     if (useBloom) composer.render(); else renderer.render(scene, camera);
   }
-  frame();
+
+  // Pre-compile every shader before the intro so the first frames don't stutter
+  const warmup = () => {
+    renderer.shadowMap.needsUpdate = true;
+    if (useBloom) composer.render(); else renderer.render(scene, camera);
+  };
+  const compiled = renderer.compileAsync && renderer.extensions.has('KHR_parallel_shader_compile')
+    ? renderer.compileAsync(scene, camera)
+    : Promise.resolve().then(() => renderer.compile(scene, camera));
+  compiled.catch(() => {}).then(() => {
+    warmup();
+    resolveScene();
+    frame();
+  });
+  ScrollTrigger.refresh();
 }
 
 /* =========================================================
@@ -667,21 +762,24 @@ function playIntro() {
   const loader = document.getElementById('loader');
   if (reduceMotion || !loader) {
     if (loader) loader.remove();
+    intro.k = 1;
     document.documentElement.classList.add('is-ready');
     return;
   }
   const t = gsap.timeline();
-  t.to('.loader-mark circle', { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' })
-    .to('.loader-word', { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.5')
-    .to(loader, { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.25')
-    .add(() => { loader.remove(); document.documentElement.classList.add('is-ready'); if (lenis) lenis.start(); })
-    .to(intro, { k: 1, duration: 2.4, ease: 'power3.out' }, '-=0.6')
-    .from('.nav', { y: -30, autoAlpha: 0, duration: 0.8, ease: 'power3.out' }, '-=2.0')
-    .from('.hero-copy > *', { y: 30, autoAlpha: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out' }, '-=1.7')
-    .from('.drag-hint, .cta-dock', { autoAlpha: 0, duration: 0.8 }, '-=1.0');
+  t.to(loader, { yPercent: -100, duration: 0.7, ease: 'expo.inOut' })
+    .add(() => { loader.remove(); document.documentElement.classList.add('is-ready'); })
+    .to(intro, { k: 1, duration: 1.8, ease: 'power3.out' }, '-=0.45')
+    .from('.nav', { y: -30, autoAlpha: 0, duration: 0.7, ease: 'power3.out' }, '<')
+    .from('.hero-copy > *', { y: 24, autoAlpha: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out' }, '<0.1')
+    .from('.drag-hint, .hero-rating', { autoAlpha: 0, duration: 0.6 }, '<0.3');
 }
-const fontsReady = document.fonts ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]) : Promise.resolve();
-fontsReady.then(() => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(playIntro, 50))));
+// Loader: the mark draws immediately; we leave as soon as the scene is ready (max ~1.6 s)
+gsap.to('.loader-mark circle', { strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' });
+gsap.to('.loader-word', { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.2 });
+const fontsReady = document.fonts ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 400))]) : Promise.resolve();
+const minShow = new Promise((r) => setTimeout(r, reduceMotion ? 0 : 700));
+Promise.all([fontsReady, minShow, Promise.race([sceneReady, new Promise((r) => setTimeout(r, 1600))])]).then(playIntro);
 
 /* =========================================================
    DOM motion

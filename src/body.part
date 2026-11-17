@@ -57,7 +57,7 @@
         <article class="benefit">
           <p class="b-num"><span>01</span> Our own factory</p>
           <h2>Built under one roof, not passed around.</h2>
-          <p>Your cabinets are produced at our 25,000 sq ft production unit and showroom — material, finish and fit stay with one team from first cut to final edge.</p>
+          <p>Your cabinets are made at our own production unit in Kochi — material, finish and fit stay with one team from first cut to final edge.</p>
         </article>
       </div>
       <div class="slot slot-2 right">
@@ -113,7 +113,7 @@
       <p class="eyebrow" data-reveal>Our story</p>
       <h2 class="split-line">
         <span class="ln"><span>Thirty-four years of furniture-making,</span></span>
-        <span class="ln"><span>three hundred homes and offices,</span></span>
+        <span class="ln"><span>three hundred and more projects,</span></span>
         <span class="ln"><span><em>one studio</em> from sketch to handover.</span></span>
       </h2>
     </section>
@@ -132,12 +132,12 @@
         <h2 id="services-title">One studio for the whole home — <em>and the office.</em></h2>
       </div>
       <ol class="service-list">
-        <li data-reveal><span class="s-no">01</span><h3>Modular kitchens</h3><p>L, U, parallel and island layouts with tall units and appliance housing.</p><span class="s-arr" aria-hidden="true">↗</span></li>
-        <li data-reveal><span class="s-no">02</span><h3>Wardrobes</h3><p>Hinged and sliding, with lofts, drawers and dresser units sized to your room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
-        <li data-reveal><span class="s-no">03</span><h3>TV units &amp; living</h3><p>Wall units, display shelving and panelling that hide wiring and hold clutter.</p><span class="s-arr" aria-hidden="true">↗</span></li>
-        <li data-reveal><span class="s-no">04</span><h3>Bedroom interiors</h3><p>Cots, side tables, study corners and storage designed as one room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
-        <li data-reveal><span class="s-no">05</span><h3>Custom furniture</h3><p>Made-to-order pieces from our own production unit when nothing off the shelf fits.</p><span class="s-arr" aria-hidden="true">↗</span></li>
-        <li data-reveal><span class="s-no">06</span><h3>Offices &amp; commercial</h3><p>Workstations, cabins, reception and storage for offices and shops — turnkey.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">01</span><h3>Modular kitchens</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20a%20modular%20kitchen." target="_blank" rel="noopener"><span class="sr-only">Enquire about Modular kitchens on WhatsApp</span></a><p>L, U, parallel and island layouts with tall units and appliance housing.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">02</span><h3>Wardrobes</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20wardrobes." target="_blank" rel="noopener"><span class="sr-only">Enquire about Wardrobes on WhatsApp</span></a><p>Hinged and sliding, with lofts, drawers and dresser units sized to your room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">03</span><h3>TV units &amp; living</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20a%20TV%20unit%20/%20living%20room." target="_blank" rel="noopener"><span class="sr-only">Enquire about TV units &amp; living on WhatsApp</span></a><p>Wall units, display shelving and panelling that hide wiring and hold clutter.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">04</span><h3>Bedroom interiors</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20bedroom%20interiors." target="_blank" rel="noopener"><span class="sr-only">Enquire about Bedroom interiors on WhatsApp</span></a><p>Cots, side tables, study corners and storage designed as one room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">05</span><h3>Custom furniture</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20custom%20furniture." target="_blank" rel="noopener"><span class="sr-only">Enquire about Custom furniture on WhatsApp</span></a><p>Made-to-order pieces from our own production unit when nothing off the shelf fits.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">06</span><h3>Offices &amp; commercial</h3><a class="s-cover" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%27d%20like%20a%20free%20consultation%20for%20an%20office%20/%20commercial%20interior." target="_blank" rel="noopener"><span class="sr-only">Enquire about Offices &amp; commercial on WhatsApp</span></a><p>Workstations, cabins, reception and storage for offices and shops — turnkey.</p><span class="s-arr" aria-hidden="true">↗</span></li>
       </ol>
     </section>
 
@@ -152,7 +152,7 @@
         </a>
         <div class="proof-cell" data-reveal><span class="big">34<sup>+</sup></span><span class="small">years making furniture &amp; interiors</span></div>
         <div class="proof-cell" data-reveal><span class="big">300<sup>+</sup></span><span class="small">completed projects</span></div>
-        <div class="proof-cell" data-reveal><span class="big">25k</span><span class="small">sq ft production unit &amp; showroom</span></div>
+        <div class="proof-cell" data-reveal><span class="big">25,000</span><span class="small">sq ft production unit &amp; showroom</span></div>
       </div>
       <p class="proof-insta" data-reveal>Follow kitchens and wardrobes as they're installed — <a href="https://www.instagram.com/surabhimodules/" target="_blank" rel="noopener">Instagram @surabhimodules ↗</a></p>
     </section>

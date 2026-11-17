@@ -7,7 +7,10 @@
     "build": "python3 build.py",
     "shots": "mkdir -p shots && node scripts/shot.js",
     "test:form": "node scripts/formtest.js",
-    "test:config": "mkdir -p shots && node scripts/cfg.js"
+    "test:config": "mkdir -p shots && node scripts/cfg.js",
+    "og": "node scripts/og.js",
+    "test:idle": "node scripts/idle.js",
+    "test:perf": "node scripts/perf.js"
   },
   "dependencies": {
     "gsap": "^3.15.1",

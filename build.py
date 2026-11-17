@@ -9,4 +9,8 @@ import os
 os.makedirs('public', exist_ok=True)
 for out in ('index.html', 'public/index.html'):   # root = GitHub Pages, public/ = Vercel
     open(out, 'w').write(html)
+import shutil
+for f in os.listdir('assets'):                      # share image etc. → served at site root
+    shutil.copy(os.path.join('assets', f), os.path.join('public', f))
+    shutil.copy(os.path.join('assets', f), f)
 print(len(html) // 1024, 'KB -> index.html + public/index.html')
