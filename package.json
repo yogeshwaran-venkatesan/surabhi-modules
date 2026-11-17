@@ -1,0 +1,21 @@
+{
+  "name": "surabhi-modules",
+  "version": "1.0.0",
+  "private": true,
+  "description": "3D interactive landing page for Surabhi Modules, Kakkanad, Kochi",
+  "scripts": {
+    "build": "python3 build.py",
+    "shots": "mkdir -p shots && node scripts/shot.js",
+    "test:form": "node scripts/formtest.js",
+    "test:config": "mkdir -p shots && node scripts/cfg.js"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "lenis": "^1.3.27",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "playwright": "^1.50.0"
+  }
+}

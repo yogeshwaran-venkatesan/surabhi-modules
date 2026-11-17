@@ -1,0 +1,243 @@
+<style>/*__CSS__*/</style>
+</head>
+<body>
+<div id="loader" aria-hidden="true">
+  <svg class="loader-mark" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54"/><text x="60" y="77" text-anchor="middle">S</text></svg>
+  <p class="loader-word">Surabhi <em>Modules</em></p>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#story">Skip to content</a>
+
+<header class="nav">
+  <a class="brand" href="#hero" aria-label="Surabhi Modules — back to top">
+    <span class="brand-mark" aria-hidden="true">S</span>
+    <span class="brand-name">Surabhi <em>Modules</em></span>
+  </a>
+  <nav aria-label="Main">
+    <a href="#finishes">Finishes</a>
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#visit">Showroom</a>
+  </nav>
+  <a class="nav-call" href="tel:+918547262464">+91 85472 62464</a>
+</header>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<main>
+  <!-- HERO -->
+  <section id="hero" class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="sr-only">Made to measure — modular kitchens and interiors in Kakkanad, Kochi</h1>
+    <p class="hero-fallback" aria-hidden="true">Made to <em>measure.</em></p>
+    <div class="hero-ui">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot"></span>Interior studio · Kakkanad, Kochi</p>
+        <p class="lead">Modular kitchens, wardrobes and complete interiors — planned around your home and built in our own 25,000&nbsp;sq&nbsp;ft facility.</p>
+        <div class="hero-actions">
+          <a class="btn btn-brass" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%20would%20like%20a%20free%20interior%20consultation." target="_blank" rel="noopener">Book a free consultation <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#finishes">Try finishes in 3D</a>
+        </div>
+      </div>
+      <a class="hero-rating" href="https://www.google.com/maps/search/?api=1&amp;query=Surabhi+Modules+Kakkanad+Kochi" target="_blank" rel="noopener">
+        <span class="hr-num">4.8</span>
+        <span class="hr-txt"><span class="stars" aria-hidden="true">★★★★★</span>Rated on Google</span>
+      </a>
+    </div>
+    <div class="drag-hint">
+      <button type="button" data-rotate="-1" aria-label="Turn the kitchen left">←</button>
+      <span>Drag to turn</span>
+      <button type="button" data-rotate="1" aria-label="Turn the kitchen right">→</button>
+    </div>
+  </section>
+
+  <div id="story">
+    <!-- 3D SCROLL STORY -->
+    <section id="benefits" class="benefits" aria-label="Why Surabhi Modules">
+      <div class="slot slot-1">
+        <article class="benefit">
+          <p class="b-num"><span>01</span> Our own factory</p>
+          <h2>Built under one roof, not passed around.</h2>
+          <p>Your cabinets are produced at our 25,000 sq ft production unit and showroom — material, finish and fit stay with one team from first cut to final edge.</p>
+        </article>
+      </div>
+      <div class="slot slot-2 right">
+        <article class="benefit">
+          <p class="b-num"><span>02</span> Storage that works</p>
+          <h2>Drawers that bring the kitchen to you.</h2>
+          <p>Deep, full-extension drawers instead of dark corner shelves. Pots, pans and daily things slide out to hand height — ask us about soft-close fittings for every module.</p>
+        </article>
+      </div>
+      <div class="slot slot-3">
+        <article class="benefit">
+          <p class="b-num"><span>03</span> Planned to your wall</p>
+          <h2>Measured for your home, not a catalogue.</h2>
+          <p>We measure on site and plan each module to it — tall pantry, upper storage, appliance gaps — so every centimetre of a Kochi apartment kitchen earns its place.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- FINISH CONFIGURATOR -->
+    <section id="finishes" class="finishes" aria-labelledby="finishes-title">
+      <div class="finishes-sticky">
+        <div class="config">
+          <p class="eyebrow">Try it on the kitchen</p>
+          <h2 id="finishes-title">Choose your finish.</h2>
+          <fieldset>
+            <legend>Shutter collection</legend>
+            <div class="swatches">
+              <button type="button" class="sw" data-collection="walnut-ivory" aria-pressed="true"><i style="--a:#4f321f;--b:#e9e1d2"></i>Walnut &amp; Ivory</button>
+              <button type="button" class="sw" data-collection="sage-oak" aria-pressed="false"><i style="--a:#77866b;--b:#b48a5e"></i>Sage &amp; Oak</button>
+              <button type="button" class="sw" data-collection="charcoal-brass" aria-pressed="false"><i style="--a:#2a2724;--b:#c9a25c"></i>Charcoal &amp; Brass</button>
+              <button type="button" class="sw" data-collection="teak-cream" aria-pressed="false"><i style="--a:#7a4a26;--b:#e6d6b8"></i>Teak &amp; Cream</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Countertop</legend>
+            <div class="swatches tops">
+              <button type="button" class="sw" data-top="granite" aria-pressed="true"><i style="--a:#1f1c1a;--b:#3a332c"></i>Granite</button>
+              <button type="button" class="sw" data-top="quartz" aria-pressed="false"><i style="--a:#e9e5de;--b:#cfc8bd"></i>Quartz</button>
+              <button type="button" class="sw" data-top="marble" aria-pressed="false"><i style="--a:#efebe4;--b:#b08a4a"></i>Marble</button>
+            </div>
+          </fieldset>
+          <p class="look">Your look: <strong id="look-label">Walnut &amp; Ivory with black galaxy granite</strong></p>
+          <a id="look-cta" class="btn btn-brass" href="https://wa.me/918089767101" target="_blank" rel="noopener">Get this look — free consultation <span class="arr" aria-hidden="true">→</span></a>
+          <p class="fine">Finishes shown are indicative. See and touch real samples at our Kakkanad showroom.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="after">
+    <!-- STATEMENT -->
+    <section class="statement" aria-label="About Surabhi Modules">
+      <p class="eyebrow" data-reveal>Our story</p>
+      <h2 class="split-line">
+        <span class="ln"><span>Thirty-four years of furniture-making,</span></span>
+        <span class="ln"><span>three hundred homes and offices,</span></span>
+        <span class="ln"><span><em>one studio</em> from sketch to handover.</span></span>
+      </h2>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Modular Kitchens</span><b>✦</b><span>Wardrobes</span><b>✦</b><span>TV Units</span><b>✦</b><span>Bedroom Interiors</span><b>✦</b><span>Custom Furniture</span><b>✦</b><span>Office Spaces</span><b>✦</b>
+        <span>Modular Kitchens</span><b>✦</b><span>Wardrobes</span><b>✦</b><span>TV Units</span><b>✦</b><span>Bedroom Interiors</span><b>✦</b><span>Custom Furniture</span><b>✦</b><span>Office Spaces</span><b>✦</b>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services" class="services" aria-labelledby="services-title">
+      <div class="sec-head" data-reveal>
+        <p class="eyebrow">What we make</p>
+        <h2 id="services-title">One studio for the whole home — <em>and the office.</em></h2>
+      </div>
+      <ol class="service-list">
+        <li data-reveal><span class="s-no">01</span><h3>Modular kitchens</h3><p>L, U, parallel and island layouts with tall units and appliance housing.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">02</span><h3>Wardrobes</h3><p>Hinged and sliding, with lofts, drawers and dresser units sized to your room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">03</span><h3>TV units &amp; living</h3><p>Wall units, display shelving and panelling that hide wiring and hold clutter.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">04</span><h3>Bedroom interiors</h3><p>Cots, side tables, study corners and storage designed as one room.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">05</span><h3>Custom furniture</h3><p>Made-to-order pieces from our own production unit when nothing off the shelf fits.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+        <li data-reveal><span class="s-no">06</span><h3>Offices &amp; commercial</h3><p>Workstations, cabins, reception and storage for offices and shops — turnkey.</p><span class="s-arr" aria-hidden="true">↗</span></li>
+      </ol>
+    </section>
+
+    <!-- PROOF -->
+    <section class="proof" aria-labelledby="proof-title">
+      <h2 id="proof-title" class="sr-only">Our track record</h2>
+      <div class="proof-grid">
+        <a class="proof-cell rating" href="https://www.google.com/maps/search/?api=1&amp;query=Surabhi+Modules+Kakkanad+Kochi" target="_blank" rel="noopener" data-reveal>
+          <span class="big">4.8</span>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span class="small">Rated 4.8 / 5 on Google — read the reviews ↗</span>
+        </a>
+        <div class="proof-cell" data-reveal><span class="big">34<sup>+</sup></span><span class="small">years making furniture &amp; interiors</span></div>
+        <div class="proof-cell" data-reveal><span class="big">300<sup>+</sup></span><span class="small">completed projects</span></div>
+        <div class="proof-cell" data-reveal><span class="big">25k</span><span class="small">sq ft production unit &amp; showroom</span></div>
+      </div>
+      <p class="proof-insta" data-reveal>Follow kitchens and wardrobes as they're installed — <a href="https://www.instagram.com/surabhimodules/" target="_blank" rel="noopener">Instagram @surabhimodules ↗</a></p>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="process" aria-labelledby="process-title">
+      <div class="sec-head" data-reveal>
+        <p class="eyebrow">How we work</p>
+        <h2 id="process-title">From empty wall to <em>finished kitchen.</em></h2>
+      </div>
+      <div class="steps">
+        <div class="step" data-reveal><span class="st-no">01</span><h3>Free consultation</h3><p>Call, WhatsApp or walk into our Kakkanad showroom. Bring your floor plan or a few photos.</p></div>
+        <div class="step" data-reveal><span class="st-no">02</span><h3>Measure &amp; design</h3><p>We measure on site and plan the layout, materials and finishes with you.</p></div>
+        <div class="step" data-reveal><span class="st-no">03</span><h3>Production</h3><p>Modules are made at our own facility, so we control quality and schedule.</p></div>
+        <div class="step" data-reveal><span class="st-no">04</span><h3>Install &amp; handover</h3><p>Our team fits everything on site and hands over a clean, finished space.</p></div>
+      </div>
+    </section>
+
+    <!-- VISIT / ENQUIRY -->
+    <section id="visit" class="visit" aria-labelledby="visit-title">
+      <div class="visit-info" data-reveal>
+        <p class="eyebrow">Visit the showroom</p>
+        <h2 id="visit-title">Come touch the <em>finishes.</em></h2>
+        <address>
+          Seaport–Airport Road, opposite Palaram Restaurant,<br>
+          Vallathol Padi, Thrikkakara, Kakkanad,<br>
+          Kochi, Kerala 682021
+        </address>
+        <dl class="facts">
+          <div><dt>Open</dt><dd>Monday – Saturday, 9:30 am – 6:00 pm</dd></div>
+          <div><dt>Call</dt><dd><a href="tel:+918547262464">+91 85472 62464</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a href="https://wa.me/918089767101" target="_blank" rel="noopener">+91 80897 67101</a></dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:info@surabhidekor.com">info@surabhidekor.com</a></dd></div>
+        </dl>
+        <a class="btn btn-dark" href="https://www.google.com/maps/search/?api=1&amp;query=Surabhi+Modules+Kakkanad+Kochi" target="_blank" rel="noopener">Directions on Google Maps <span class="arr" aria-hidden="true">↗</span></a>
+      </div>
+
+      <form id="enquiry" class="enquiry" novalidate data-reveal>
+        <h3>Book a free consultation</h3>
+        <p class="muted">Send your details — we'll reply on WhatsApp.</p>
+        <div class="row2">
+          <label>Your name<input name="name" autocomplete="name" required></label>
+          <label>Phone<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></label>
+        </div>
+        <div class="row2">
+          <label>Area / locality<input name="area" placeholder="Kakkanad, Edappally…"></label>
+          <label>Looking for
+            <select name="need">
+              <option>Modular kitchen</option>
+              <option>Wardrobes</option>
+              <option>TV unit / living room</option>
+              <option>Full home interiors</option>
+              <option>Office / commercial</option>
+              <option>Something else</option>
+            </select>
+          </label>
+        </div>
+        <label>Anything we should know? <textarea name="message" rows="3" placeholder="Flat size, timeline, budget range…"></textarea></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <button class="btn btn-dark" type="submit">Send on WhatsApp <span class="arr" aria-hidden="true">→</span></button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <div class="foot-top">
+        <p class="foot-cta">Let's build yours.</p>
+        <div class="foot-links">
+          <a href="https://www.instagram.com/surabhimodules/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://surabhidekor.com/" target="_blank" rel="noopener">surabhidekor.com</a>
+          <a href="mailto:info@surabhidekor.com">info@surabhidekor.com</a>
+          <a href="tel:+918547262464">+91 85472 62464</a>
+        </div>
+      </div>
+      <p class="mega-word" aria-hidden="true"><span>Surabhi</span> <em>Modules</em></p>
+      <p class="copy">© <span id="year">2026</span> Surabhi Modules · Interior design studio, Kakkanad, Kochi</p>
+    </footer>
+  </div>
+</main>
+
+<div class="cta-dock">
+  <a class="dock-call" href="tel:+918547262464" aria-label="Call Surabhi Modules"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg><span>Call</span></a>
+  <a class="dock-wa" href="https://wa.me/918089767101?text=Hello%20Surabhi%20Modules%2C%20I%20would%20like%20a%20free%20interior%20consultation." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3 .78.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.25-.12-1.46-.72-1.69-.8s-.39-.12-.56.12-.64.8-.79.97-.29.18-.54.06a6.7 6.7 0 0 1-3.3-2.9c-.25-.43.25-.4.71-1.33a.45.45 0 0 0-.02-.42c-.06-.12-.56-1.35-.77-1.85s-.41-.42-.56-.43h-.48a.92.92 0 0 0-.67.31 2.8 2.8 0 0 0-.87 2.08 4.9 4.9 0 0 0 1.02 2.59 11.2 11.2 0 0 0 4.3 3.8c1.6.69 2.23.75 3.03.63a2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .15-1.2c-.06-.1-.23-.17-.48-.29z"/></svg><span>Book free consultation</span></a>
+</div>
+
+<script>/*__JS__*/</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modular Kitchens &amp; Interiors in Kakkanad, Kochi | Surabhi Modules</title>
+<meta name="description" content="Surabhi Modules designs and builds modular kitchens, wardrobes, TV units and complete home and office interiors in Kakkanad, Kochi. 34+ years, 300+ projects. Book a free consultation.">
+<meta property="og:title" content="Surabhi Modules — Modular Kitchens &amp; Interiors, Kochi">
+<meta property="og:description" content="Kitchens, wardrobes and full interiors, made to measure in our own 25,000 sq ft facility. Book a free consultation.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#120F0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Surabhi Modules",
+  "alternateName": "Surabhi Decor",
+  "description": "Interior design studio for modular kitchens, wardrobes, TV units, home and office interiors.",
+  "url": "https://surabhidekor.com/",
+  "telephone": "+91-8547262464",
+  "email": "info@surabhidekor.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Seaport–Airport Road, opposite Palaram Restaurant, Vallathol Padi, Thrikkakara",
+    "addressLocality": "Kakkanad, Kochi",
+    "addressRegion": "Kerala",
+    "postalCode": "682021",
+    "addressCountry": "IN"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "09:30", "closes": "18:00"
+  }],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "5" },
+  "sameAs": ["https://www.instagram.com/surabhimodules/", "https://surabhidekor.com/"]
+}
+</script>
